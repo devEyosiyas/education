@@ -7,41 +7,36 @@ on:
     branches: [ main ]
 
 jobs:
-
-  apk:
-      name: Generate APK
-      runs-on: ubuntu-latest
-
-      steps:
-        - uses: actions/checkout@v1
-        - name: set up JDK 11
-          uses: actions/setup-java@v1
-          with:
-            java-version: '11'
-        - name: Build debug APK
-          run: bash ./gradlew assembleDebug --stacktrace
-        - name: Upload APK
-          uses: actions/upload-artifact@v1
-          with:
-            name: app
-            path: app/build/outputs/apk/debug/app-debug.apk
-
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
-    - name: set up JDK 11
-      uses: actions/setup-java@v2
-      with:
-        java-version: '11'
-        distribution: 'adopt'
-        cache: gradle
+      - uses: actions/checkout@v2
+      - name: set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          cache: gradle
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: Build with Gradle
-      run: ./gradlew build
-      
-  
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build with Gradle
+        run: ./gradlew build
+
+  release:
+    name: Upload apk to App Testers
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+      - name: build release
+        run: bash ./gradlew assembleDebug
+      - name: upload artifact to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1.2.2
+        with:
+          appId: '1:178497377300:android:f03a0528cfef526989c301'
+          token: '1//03viZ505L1l2dCgYIARAAGAMSNwF-L9Ir1WTa-rVE2FOafUKfDE8fEpQy7phbqM9PRYDKYOVKpeZh9RDUkBOCoVmJ1OmKFllglSQ'
+          groups: testers
+          file: app/build/outputs/apk/debug/app-debug.apk
