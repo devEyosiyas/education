@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">My Edu</string>
+    <string name="lets_get_started">Let\'s get started</string>
+    <string name="skip">Skip</string>
 </resources>
