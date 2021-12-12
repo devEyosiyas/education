@@ -6,4 +6,7 @@ object Constant {
     const val PREF_NAME = "name"
     const val PREF_EMAIL = "email"
 
+    const val UDEMY_BASE_URL = "https://www.udemy.com/"
+    const val PAGE = 1
+    const val PAGE_SIZE = 50
 }

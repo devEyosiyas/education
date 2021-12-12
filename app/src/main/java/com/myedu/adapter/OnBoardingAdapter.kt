@@ -67,7 +67,6 @@ class OnBoardingAdapter() :
     }
 
     override fun onClick(p0: View?) {
-        Log.i("OnBoardingAdapter", "onClick: ${p0?.id}")
         p0?.also {
             if (it.id == R.id.btnGetStarted || it.id == R.id.btnSkip) {
                 PrefManager(p0.context).isFirsTimer = false

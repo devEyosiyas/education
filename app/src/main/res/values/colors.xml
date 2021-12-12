@@ -10,4 +10,5 @@
     <color name="brand">#6C419A</color>
     <color name="brand_dark">#3d166b</color>
     <color name="brand_light">#9d6ecb</color>
+    <color name="brand_gray">#999999</color>
 </resources>

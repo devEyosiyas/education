@@ -1,7 +1,6 @@
 package com.myedu.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -100,14 +99,21 @@ class LoginFragment : Fragment() {
                 .addOnCompleteListener(it) { task ->
                     if (task.isSuccessful) {
                         val user = auth.currentUser
-                        Log.d(TAG, "signInWithEmail:success ${user?.displayName}")
+                        if (user != null) {
+                            with(pref) {
+                                email = user.email.toString()
+                                name = user.displayName.toString()
+                            }
+                        }
                         Toast.makeText(
                             context,
                             getString(R.string.login_successful),
                             Toast.LENGTH_SHORT
                         ).show()
+                        Navigation
+                            .createNavigateOnClickListener(R.id.action_loginFragment_to_mainFragment)
+                            .onClick(view)
                     } else {
-                        Log.w(TAG, "signInWithEmail:failure", task.exception)
                         Toast.makeText(context, task.exception?.message, Toast.LENGTH_SHORT).show()
                     }
                     binding.progress.visibility = View.GONE
@@ -143,9 +149,5 @@ class LoginFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        private const val TAG = "LoginFragment"
     }
 }

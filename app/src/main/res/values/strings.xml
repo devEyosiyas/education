@@ -24,4 +24,5 @@
     <string name="my_courses">My courses</string>
     <string name="favourite">Favourite</string>
     <string name="profile">Profile</string>
+    <string name="popular_courses">Popular courses</string>
 </resources>

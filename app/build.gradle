@@ -25,6 +25,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    defaultConfig {
+        buildConfigField "String", "Authorization", '"Basic RjM5aVlsZHlKZFlIa3huUnV5NTZHOExNeVBzbEl2Z2RXQWx6Vm5EYzo4M1EzMlQyaVJVQldNVEk0NkJBSjJNUVNQWFlqc29ZSTBlT01rRFpMNjRpU1hlTnNLeFl3OGdLTkFBUmc3STBPWjZ0SlVobjdDRnlBZ1NvajY5NGtOajk1ZmtFQ2hIbGxrTGU1ZldKRDZpYkJLU2QyRlkwaEtvSGRWTkhTY3RVQw=="'
+    }
     buildFeatures {
         viewBinding true
     }

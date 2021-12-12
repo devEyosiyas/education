@@ -108,6 +108,9 @@ class SignUpFragment : Fragment() {
                                 name = binding.editName.text.toString()
                             }
                         }
+                        Navigation
+                            .createNavigateOnClickListener(R.id.action_signUpFragment_to_mainFragment)
+                            .onClick(view)
                     } else {
                         Toast.makeText(context, task.exception?.message, Toast.LENGTH_SHORT).show()
                     }
