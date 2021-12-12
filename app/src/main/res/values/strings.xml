@@ -2,4 +2,14 @@
     <string name="app_name">My Edu</string>
     <string name="lets_get_started">Let\'s get started</string>
     <string name="skip">Skip</string>
+    <string name="login">Login</string>
+    <string name="e_mail">E-mail</string>
+    <string name="password">Password</string>
+    <string name="helper_email">E-mail is required</string>
+    <string name="helper_password">Password is required</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="log_in">Log in</string>
+    <string name="don_t_have_an_account_sign_up">Don\'t have an account? <font color='#6C419A'>Sign up</font></string>
+    <string name="error_email">Invalid E-mail address</string>
+    <string name="error_password">Weak Password</string>
 </resources>
