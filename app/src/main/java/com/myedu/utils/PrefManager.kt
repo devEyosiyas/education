@@ -17,6 +17,17 @@ class PrefManager(context: Context) {
             preferences.edit().putBoolean(Constant.FIRST_TIMER, b).apply()
         }
 
+    var name: String
+        get() = preferences.getString(Constant.PREF_NAME, "").toString()
+        set(name) {
+            preferences.edit().putString(Constant.PREF_NAME, name).apply()
+        }
+
+    var email: String
+        get() = preferences.getString(Constant.PREF_EMAIL, "").toString()
+        set(email) {
+            preferences.edit().putString(Constant.PREF_EMAIL, email).apply()
+        }
 
     init {
         try {

@@ -8,15 +8,23 @@ import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.myedu.R
 import com.myedu.databinding.FragmentSignUpBinding
+import com.myedu.utils.PrefManager
 import com.myedu.utils.Validator.validateEmail
 import com.myedu.utils.Validator.validateName
 import com.myedu.utils.Validator.validatePassword
 
+
 class SignUpFragment : Fragment() {
     private var _binding: FragmentSignUpBinding? = null
     private val binding get() = _binding!!
+    private lateinit var auth: FirebaseAuth
+    private lateinit var pref: PrefManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,6 +37,9 @@ class SignUpFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        pref = context?.let { PrefManager(it) }!!
+        auth = Firebase.auth
+
         binding.editName.doOnTextChanged { text, _, _, _ ->
             if (validateName(text.toString()))
                 with(binding.nameInputLayout) {
@@ -77,7 +88,32 @@ class SignUpFragment : Fragment() {
     }
 
     private fun register() {
-        Toast.makeText(context, "Valid data ready to register.", Toast.LENGTH_SHORT).show()
+        binding.progress.visibility = View.VISIBLE
+        activity?.let {
+            auth.createUserWithEmailAndPassword(
+                binding.editEmail.text.toString(),
+                binding.editPassword.text.toString()
+            )
+                .addOnCompleteListener(it) { task ->
+                    if (task.isSuccessful) {
+                        val user = auth.currentUser
+                        user?.updateProfile(
+                            UserProfileChangeRequest.Builder()
+                                .setDisplayName(binding.editName.text.toString())
+                                .build()
+                        )
+                        if (user != null) {
+                            with(pref) {
+                                email = user.email.toString()
+                                name = binding.editName.text.toString()
+                            }
+                        }
+                    } else {
+                        Toast.makeText(context, task.exception?.message, Toast.LENGTH_SHORT).show()
+                    }
+                    binding.progress.visibility = View.GONE
+                }
+        }
     }
 
     private fun validateFields() {
@@ -118,5 +154,9 @@ class SignUpFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        private const val TAG = "SignUpFragment"
     }
 }

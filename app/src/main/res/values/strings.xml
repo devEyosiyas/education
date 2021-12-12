@@ -18,4 +18,6 @@
     <string name="error_name">Invalid Name</string>
     <string name="error_email">Invalid E-mail address</string>
     <string name="error_password">Weak Password</string>
+    <string name="login_successful">Login Successful</string>
+    <string name="password_recovery">Password recovery e-mail sent</string>
 </resources>

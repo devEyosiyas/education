@@ -27,12 +27,18 @@
         android:scaleType="fitCenter"
         android:src="@drawable/ic_illustration_sign_up" />
 
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
     <com.google.android.material.card.MaterialCardView
         style="@style/CardView.TopCorner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="-48dp"
         android:layout_marginEnd="8dp"
         app:cardElevation="32dp">
 
@@ -132,4 +138,5 @@
             </RelativeLayout>
         </ScrollView>
     </com.google.android.material.card.MaterialCardView>
+
 </LinearLayout>
