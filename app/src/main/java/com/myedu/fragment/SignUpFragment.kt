@@ -9,13 +9,13 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.myedu.R
-import com.myedu.databinding.FragmentLoginBinding
+import com.myedu.databinding.FragmentSignUpBinding
 import com.myedu.utils.Validator.validateEmail
 import com.myedu.utils.Validator.validateName
 import com.myedu.utils.Validator.validatePassword
 
-class LoginFragment : Fragment() {
-    private var _binding: FragmentLoginBinding? = null
+class SignUpFragment : Fragment() {
+    private var _binding: FragmentSignUpBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -23,12 +23,22 @@ class LoginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        _binding = FragmentSignUpBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.editName.doOnTextChanged { text, _, _, _ ->
+            if (validateName(text.toString()))
+                with(binding.nameInputLayout) {
+                    error = null
+                    isHelperTextEnabled = false
+                }
+            else
+                binding.nameInputLayout.error = getString(R.string.error_name)
+        }
+
         binding.editEmail.doOnTextChanged { text, _, _, _ ->
             if (validateEmail(text.toString()))
                 with(binding.emailInputLayout) {
@@ -52,25 +62,35 @@ class LoginFragment : Fragment() {
         binding.btnLogIn.setOnClickListener {
             validateFields()
             when {
+                !validateName(binding.editName.text.toString()) -> binding.editName.requestFocus()
                 !validateEmail(binding.editEmail.text.toString()) -> binding.editEmail.requestFocus()
                 !validatePassword(binding.editPassword.text.toString()) -> binding.editPassword.requestFocus()
-                else -> login()
+                else -> register()
             }
         }
 
-        // TODO: 12/12/2021 implement forgot password logic
-        binding.txtForgotPassword.setOnClickListener {  }
-
-        binding.txtSignUp.setOnClickListener {  Navigation
-            .createNavigateOnClickListener(R.id.action_loginFragment_to_signUpFragment)
-            .onClick(it) }
+        binding.txtLogin.setOnClickListener {
+            Navigation
+                .createNavigateOnClickListener(R.id.action_signUpFragment_to_loginFragment)
+                .onClick(it)
+        }
     }
 
-    private fun login() {
-        Toast.makeText(context, "Logged in", Toast.LENGTH_SHORT).show()
+    private fun register() {
+        Toast.makeText(context, "Valid data ready to register.", Toast.LENGTH_SHORT).show()
     }
 
     private fun validateFields() {
+        if (!validateName(binding.editName.text.toString()))
+            with(binding.nameInputLayout) {
+                requestFocus()
+                error = getString(R.string.helper_name)
+            }
+        else
+            with(binding.nameInputLayout) {
+                error = null
+                isHelperTextEnabled = false
+            }
         if (!validateEmail(binding.editEmail.text.toString()))
             with(binding.emailInputLayout) {
                 requestFocus()
