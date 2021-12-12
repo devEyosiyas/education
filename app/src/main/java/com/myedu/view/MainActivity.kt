@@ -1,9 +1,14 @@
 package com.myedu.view
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.myedu.R
 import com.myedu.databinding.ActivityMainBinding
 import com.myedu.utils.PrefManager
@@ -11,12 +16,16 @@ import com.myedu.utils.PrefManager
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         setTheme(R.style.Theme_MyEdu);
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        auth = Firebase.auth
+        val currentUser = auth.currentUser
         val pref = PrefManager(this)
 
         val navHostFragment =
@@ -24,11 +33,19 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         val navGraph = navController.navInflater.inflate(R.navigation.main_navigation)
-        navGraph.startDestination =
-            if (pref.isFirsTimer)
-                R.id.onBoardingFragment
+        when {
+            pref.isFirsTimer -> R.id.onBoardingFragment
+            currentUser != null -> R.id.mainFragment
+            else -> R.id.loginFragment
+        }.also { navGraph.startDestination = it }
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.onBoardingFragment || destination.id == R.id.loginFragment || destination.id == R.id.signUpFragment)
+                binding.bottomNavView.visibility = View.GONE
             else
-                R.id.loginFragment
+                binding.bottomNavView.visibility = View.VISIBLE
+        }
         navController.graph = navGraph
+        binding.bottomNavView.setupWithNavController(navController)
     }
 }

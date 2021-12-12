@@ -24,6 +24,9 @@
             app:destination="@id/signUpFragment"
             app:popUpTo="@+id/main_navigation"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_loginFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
@@ -35,5 +38,13 @@
             app:destination="@id/loginFragment"
             app:popUpTo="@+id/main_navigation"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_signUpFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.myedu.fragment.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" />
 </navigation>

@@ -20,4 +20,8 @@
     <string name="error_password">Weak Password</string>
     <string name="login_successful">Login Successful</string>
     <string name="password_recovery">Password recovery e-mail sent</string>
+    <string name="home">Home</string>
+    <string name="my_courses">My courses</string>
+    <string name="favourite">Favourite</string>
+    <string name="profile">Profile</string>
 </resources>

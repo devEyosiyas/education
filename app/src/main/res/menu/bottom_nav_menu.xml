@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/viewPagerFragment"
+        android:icon="@drawable/ic_home"
+        android:title="@string/home" />
+    <item
+        android:id="@+id/navMenuBlacklist"
+        android:icon="@drawable/ic_book"
+        android:title="@string/my_courses" />
+    <item
+        android:id="@+id/navMenuBlockedMessages"
+        android:icon="@drawable/ic_favorite"
+        android:title="@string/favourite" />
+    <item
+        android:id="@+id/navMenuWhitelist"
+        android:icon="@drawable/ic_person"
+        android:title="@string/profile" />
+</menu>
