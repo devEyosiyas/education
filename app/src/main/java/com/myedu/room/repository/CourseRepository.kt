@@ -5,6 +5,9 @@ import androidx.lifecycle.LiveData
 import com.myedu.model.Course
 import com.myedu.room.RoomDb
 import com.myedu.room.dao.CourseDao
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import kotlin.coroutines.coroutineContext
 
 class CourseRepository(application: Application) {
     private val courseDao: CourseDao
@@ -20,6 +23,14 @@ class CourseRepository(application: Application) {
 
     fun deleteAll() {
         RoomDb.databaseWriteExecutor.execute { courseDao.deleteAll() }
+    }
+
+    suspend fun course(id: Int): Course {
+        var course: Course
+        withContext(coroutineContext + Dispatchers.IO) {
+            course = courseDao.course(id)
+        }
+        return course
     }
 
     init {

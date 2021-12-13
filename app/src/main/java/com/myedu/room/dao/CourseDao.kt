@@ -17,4 +17,7 @@ interface CourseDao {
 
     @get:Query("SELECT * FROM Course ORDER BY id DESC LIMIT 100")
     val courses: LiveData<List<Course>?>
+
+    @Query("SELECT * FROM Course WHERE id = :id")
+    fun course(id: Int): Course
 }

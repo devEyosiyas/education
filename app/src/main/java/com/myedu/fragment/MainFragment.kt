@@ -5,9 +5,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import com.google.android.material.chip.Chip
+import com.myedu.R
 import com.myedu.adapter.CourseAdapter
 import com.myedu.databinding.FragmentMainBinding
 import com.myedu.event.CourseListener
@@ -98,5 +101,10 @@ class MainFragment : Fragment(), CourseListener {
 
     override fun onCourseSelected(course: Course) {
         Log.i(TAG, "onCourseSelected: $course")
+//        val action = ViewPagerFragmentDirections.navigateToDetailFragment(message.sender, displayName)
+//        Navigation.findNavController(binder.root).navigate(action)
+        Navigation
+            .createNavigateOnClickListener(R.id.action_mainFragment_to_courseDetailFragment,bundleOf("courseId" to course.id))
+            .onClick(view)
     }
 }

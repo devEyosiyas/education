@@ -25,4 +25,6 @@
     <string name="favourite">Favourite</string>
     <string name="profile">Profile</string>
     <string name="popular_courses">Popular courses</string>
+    <string name="share">Share</string>
+    <string name="about_the_course">About the course</string>
 </resources>

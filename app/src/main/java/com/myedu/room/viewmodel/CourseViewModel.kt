@@ -31,6 +31,10 @@ class CourseViewModel(application: Application) : AndroidViewModel(application) 
         courseRepository.deleteAll()
     }
 
+    suspend fun course(id: Int): Course {
+        return courseRepository.course(id)
+    }
+
     val isEmpty: Boolean
         get() = if (courseRepository.courses.value != null) courseRepository.courses.value!!.isNotEmpty() else true
 
