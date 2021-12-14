@@ -72,25 +72,28 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_course" />
 
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chipGroup"
+        <HorizontalScrollView
+            android:id="@+id/chipContainer"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_below="@id/rvPopularCourse"
-            android:layout_margin="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            app:singleLine="true">
+            android:padding="8dp"
+            android:scrollbars="none">
 
-        </com.google.android.material.chip.ChipGroup>
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_margin="8dp"
+                app:singleLine="true" />
+
+        </HorizontalScrollView>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvCourseCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/chipGroup"
+            android:layout_below="@id/chipContainer"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_course" />

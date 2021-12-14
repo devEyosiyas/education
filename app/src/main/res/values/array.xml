@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="courseCategory">
+        <item>Business</item>
+        <item>Design</item>
+        <item>Development</item>
+        <item>Finance &amp; Accounting</item>
+        <item>Health &amp; Fitness</item>
+        <item>IT &amp; Software</item>
+        <item>Lifestyle</item>
+        <item>Marketing</item>
+        <item>Music</item>
+        <item>Office Productivity</item>
+        <item>Personal Development</item>
+        <item>Photography &amp; Video</item>
+        <item>Teaching &amp; Academics</item>
+        <item>Udemy Free Resource Center</item>
+    </string-array>
+</resources>
