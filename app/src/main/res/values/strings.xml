@@ -27,4 +27,9 @@
     <string name="popular_courses">Popular courses</string>
     <string name="share">Share</string>
     <string name="about_the_course">About the course</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="title_message">Welcome</string>
+    <string name="message">Do you want to use your camera ?</string>
+    <string name="response_yes">Yes</string>
+    <string name="response_no">No</string>
 </resources>

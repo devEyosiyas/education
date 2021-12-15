@@ -1,16 +1,29 @@
 package com.myedu.fragment
 
+import android.app.Activity
+import android.content.ContentValues.TAG
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.google.android.material.chip.Chip
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.myedu.R
 import com.myedu.adapter.CourseAdapter
 import com.myedu.databinding.FragmentMainBinding
@@ -26,6 +39,7 @@ import com.myedu.utils.PrefManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.jar.Manifest
 
 
 class MainFragment : Fragment(), CourseListener {
@@ -35,6 +49,10 @@ class MainFragment : Fragment(), CourseListener {
     private lateinit var adapter: CourseAdapter
     private lateinit var categoryAdapter: CourseAdapter
     private lateinit var viewModel: CourseViewModel
+
+    private var uploadedImage : ImageView? = null
+    private var image : Uri? = null
+
     private lateinit var request: ServerRequest
 
     override fun onCreateView(
@@ -43,7 +61,26 @@ class MainFragment : Fragment(), CourseListener {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
+
+        uploadedImage = binding.userPicture
+        binding.userPicture.setOnClickListener {
+            showDialog()
+        }
         return binding.root
+    }
+
+    private fun setPermission() {
+        if (ContextCompat.checkSelfPermission(requireContext(),
+                android.Manifest.permission.CAMERA) ==
+            PackageManager.PERMISSION_GRANTED
+        ) {
+            useCamera()
+
+        } else {
+            ActivityCompat.requestPermissions(requireActivity(), arrayOf(android
+                .Manifest.permission.CAMERA), CAMERA_PERMISSION_CODE
+            )
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -100,6 +137,8 @@ class MainFragment : Fragment(), CourseListener {
 
     companion object {
         private const val TAG = "MainFragment"
+        private const val CAMERA_PERMISSION_CODE = 5
+        private const val CAMERA = 10
     }
 
     private fun getCourseByCategory(category: String) {
@@ -129,5 +168,74 @@ class MainFragment : Fragment(), CourseListener {
                 bundleOf("courseId" to course.id)
             )
             .onClick(view)
+    }
+
+    /**Select an image**/
+    fun selectImage(){
+        val intent = Intent()
+        intent.type = "image/"
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(Intent.createChooser(intent, "Select image"), 30)
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == 30 && resultCode == Activity.RESULT_OK){
+
+            if (data == null || data.data == null) return
+            image = data.data
+
+            /**Retrieve image**/
+            uploadedImage?.setImageURI(image)
+
+        }
+
+        //For camera
+        if (requestCode == CAMERA_PERMISSION_CODE){
+            val image : Bitmap = data!!.extras!!.get("data") as Bitmap
+            binding.userPicture.setImageBitmap(image)
+
+        }
+
+    }
+
+    //Show a dialog
+    private fun showDialog(){
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.title_message))
+            .setMessage(getString(R.string.message))
+            .setCancelable(false)
+            .setNegativeButton(getString(R.string.response_yes)) { _, _ -> setPermission()}
+            .setPositiveButton(getString(R.string.response_no)) { _, _ -> selectImage()}.show()
+    }
+
+    //Use camera
+    private fun useCamera(){
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(intent, CAMERA)
+
+    }
+
+    //Request permission for camera
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == CAMERA_PERMISSION_CODE){
+
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                startActivityForResult(intent, CAMERA)
+
+            }else{
+                Toast.makeText(requireContext(), "You denied permission for camera",
+                    Toast.LENGTH_LONG).show()
+            }
+        }
     }
 }
