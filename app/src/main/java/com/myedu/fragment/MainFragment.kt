@@ -17,6 +17,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -46,11 +47,13 @@ class MainFragment : Fragment(), CourseListener {
     private val binding get() = _binding!!
     private lateinit var pref: PrefManager
     private lateinit var adapter: CourseAdapter
+    private lateinit var categoryAdapter: CourseAdapter
     private lateinit var viewModel: CourseViewModel
 
     private var uploadedImage : ImageView? = null
     private var image : Uri? = null
 
+    private lateinit var request: ServerRequest
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -85,30 +88,31 @@ class MainFragment : Fragment(), CourseListener {
         pref = context?.let { PrefManager(it) }!!
         binding.userName.text = "Hi, ${pref.name.split(" ")[0]}"
         viewModel = ViewModelProvider(this)[CourseViewModel::class.java]
+        request = Client.getClient().create(ServerRequest::class.java)
         adapter = CourseAdapter(this@MainFragment)
+        categoryAdapter = CourseAdapter(this@MainFragment)
         binding.rvPopularCourse.adapter = adapter
+        binding.rvCourseCategory.adapter = categoryAdapter
         viewModel.courses.observe(viewLifecycleOwner) { courses ->
             adapter.data = courses
         }
 
-        var demo = arrayOf<String>("Animation", "Editing")
-        for (genre in demo) {
-            val chip = Chip(context)
-            chip.text = genre
-//            chip.isCheckable = true
-//            chip.isEnabled = false
-//            chip.setTextColor(ResourcesCompat.getColor(resources, R.color.white,null))
-//            chip.setChipBackgroundColorResource(R.color.brand_dark)
-            binding.chipGroup.addView(chip)
-            chip.setOnClickListener {
-                Log.i(
-                    TAG,
-                    "onViewCreated: ${chip.text} checked ${chip.isChecked} checkable ${chip.isCheckable}"
-                )
-                chip.isCheckable = !chip.isCheckable
+        val categories = resources.getStringArray(R.array.courseCategory)
+        for (category in categories) {
+            with(Chip(context))
+            {
+                text = category
+                binding.chipGroup.addView(this)
+                setTextColor(ResourcesCompat.getColor(resources, R.color.white, null))
+                setChipBackgroundColorResource(R.color.brand_dark)
+                setOnClickListener { getCourseByCategory(text.toString()) }
             }
         }
-        val request: ServerRequest = Client.getClient().create(ServerRequest::class.java)
+        getLatestCourses()
+        getCourseByCategory(categories[0])
+    }
+
+    private fun getLatestCourses() {
         request.getCourses(PAGE, PAGE_SIZE).enqueue(object : Callback<CourseResponse?> {
             override fun onResponse(
                 call: Call<CourseResponse?>,
@@ -137,12 +141,32 @@ class MainFragment : Fragment(), CourseListener {
         private const val CAMERA = 10
     }
 
+    private fun getCourseByCategory(category: String) {
+        request.getCourseByCategory(PAGE, PAGE_SIZE, category)
+            .enqueue(object : Callback<CourseResponse?> {
+                override fun onResponse(
+                    call: Call<CourseResponse?>,
+                    response: Response<CourseResponse?>
+                ) {
+                    val courseResponse = response.body()
+                    if (response.isSuccessful && courseResponse != null && courseResponse.courses.isNotEmpty()) {
+                        categoryAdapter.data = courseResponse.courses
+                    }
+                }
+
+                override fun onFailure(call: Call<CourseResponse?>, t: Throwable) {
+                    Log.e(TAG, "onFailure: ", t)
+                }
+            })
+    }
+
     override fun onCourseSelected(course: Course) {
         Log.i(TAG, "onCourseSelected: $course")
-//        val action = ViewPagerFragmentDirections.navigateToDetailFragment(message.sender, displayName)
-//        Navigation.findNavController(binder.root).navigate(action)
         Navigation
-            .createNavigateOnClickListener(R.id.action_mainFragment_to_courseDetailFragment,bundleOf("courseId" to course.id))
+            .createNavigateOnClickListener(
+                R.id.action_mainFragment_to_courseDetailFragment,
+                bundleOf("courseId" to course.id)
+            )
             .onClick(view)
     }
 

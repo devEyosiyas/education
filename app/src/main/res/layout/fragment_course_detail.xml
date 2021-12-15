@@ -54,13 +54,14 @@
 
     <Button
         android:id="@+id/btnShare"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/courseBanner"
         android:layout_alignParentEnd="true"
-        android:drawableStart="@drawable/ic_share"
         android:text="@string/share"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"
+        app:icon="@drawable/ic_share" />
 
     <TextView
         android:id="@+id/txtAboutTheCourse"
