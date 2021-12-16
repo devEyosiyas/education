@@ -69,6 +69,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/instructorName"
         android:padding="16dp"
+        android:visibility="gone"
         android:text="@string/about_the_course"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
         android:textColor="@color/black"

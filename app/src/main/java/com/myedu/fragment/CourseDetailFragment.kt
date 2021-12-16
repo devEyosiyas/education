@@ -48,10 +48,16 @@ class CourseDetailFragment : Fragment() {
 
         loadCourseDetail(args.courseId)
         viewModel.viewModelScope.launch {
+
             with(viewModel.course(args.courseId)) {
-                binding.courseHeadline.text = headline
                 selectedCourse = this
             }
+
+            if (selectedCourse != null) {
+                binding.courseHeadline.text = selectedCourse!!.headline
+                binding.txtAboutTheCourse.visibility = View.VISIBLE
+            }
+
         }
 
         binding.imgBack.setOnClickListener {
@@ -69,7 +75,8 @@ class CourseDetailFragment : Fragment() {
             startActivity(
                 Intent.createChooser(
                     Intent(Intent.ACTION_SEND).setType("text/plain")
-                        .putExtra(Intent.EXTRA_TEXT,
+                        .putExtra(
+                            Intent.EXTRA_TEXT,
                             "$message${UDEMY_BASE_URL.removeSuffix("/")}${it.url}"
                         ), "Share course", null
                 )
