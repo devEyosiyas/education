@@ -29,15 +29,14 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/userPicture"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             android:layout_alignParentEnd="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:src="@drawable/ic_person"
-            app:shapeAppearanceOverlay="@style/circleImageView"
-            app:tint="@color/brand_dark" />
+            app:shapeAppearanceOverlay="@style/circleImageView" />
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/search"

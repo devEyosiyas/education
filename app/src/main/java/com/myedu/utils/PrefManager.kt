@@ -29,6 +29,12 @@ class PrefManager(context: Context) {
             preferences.edit().putString(Constant.PREF_EMAIL, email).apply()
         }
 
+    var profilePicture: String
+        get() = preferences.getString(Constant.PREF_PROFILE_PICTURE, "").toString()
+        set(profilePicture) {
+            preferences.edit().putString(Constant.PREF_PROFILE_PICTURE, profilePicture).apply()
+        }
+
     init {
         try {
             val masterKey: MasterKey =
