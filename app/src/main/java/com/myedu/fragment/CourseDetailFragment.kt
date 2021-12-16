@@ -1,5 +1,6 @@
 package com.myedu.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,9 +15,11 @@ import coil.load
 import com.myedu.R
 import com.myedu.databinding.FragmentCourseDetailBinding
 import com.myedu.event.ServerRequest
+import com.myedu.model.Course
 import com.myedu.model.response.CourseDetailResponse
 import com.myedu.room.viewmodel.CourseViewModel
 import com.myedu.utils.Client
+import com.myedu.utils.Constant.UDEMY_BASE_URL
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -28,6 +31,7 @@ class CourseDetailFragment : Fragment() {
     private val binding get() = _binding!!
     private val args: CourseDetailFragmentArgs by navArgs()
     private lateinit var viewModel: CourseViewModel
+    private var selectedCourse: Course? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,15 +48,39 @@ class CourseDetailFragment : Fragment() {
 
         loadCourseDetail(args.courseId)
         viewModel.viewModelScope.launch {
+
             with(viewModel.course(args.courseId)) {
-                binding.courseHeadline.text = headline
+                selectedCourse = this
             }
+
+            if (selectedCourse != null) {
+                binding.courseHeadline.text = selectedCourse!!.headline
+                binding.txtAboutTheCourse.visibility = View.VISIBLE
+            }
+
         }
 
         binding.imgBack.setOnClickListener {
             Navigation
                 .createNavigateOnClickListener(R.id.action_courseDetailFragment_to_mainFragment)
                 .onClick(it)
+        }
+
+        binding.btnShare.setOnClickListener { shareCourse() }
+    }
+
+    private fun shareCourse() {
+        val message = "Please check this amazing course\n"
+        selectedCourse?.also {
+            startActivity(
+                Intent.createChooser(
+                    Intent(Intent.ACTION_SEND).setType("text/plain")
+                        .putExtra(
+                            Intent.EXTRA_TEXT,
+                            "$message${UDEMY_BASE_URL.removeSuffix("/")}${it.url}"
+                        ), "Share course", null
+                )
+            )
         }
     }
 
