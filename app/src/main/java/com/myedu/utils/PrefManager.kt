@@ -2,6 +2,7 @@ package com.myedu.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.Uri
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.myedu.utils.Constant.PREF_FILE
@@ -30,7 +31,7 @@ class PrefManager(context: Context) {
         }
 
     var profilePicture: String
-        get() = preferences.getString(Constant.PREF_PROFILE_PICTURE, "").toString()
+        get() = Uri.decode(preferences.getString(Constant.PREF_PROFILE_PICTURE, "").toString())
         set(profilePicture) {
             preferences.edit().putString(Constant.PREF_PROFILE_PICTURE, profilePicture).apply()
         }
