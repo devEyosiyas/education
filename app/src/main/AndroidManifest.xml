@@ -3,6 +3,7 @@
     package="com.myedu">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="false"
@@ -11,9 +12,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyEdu">
-        <activity
-            android:name=".view.OnBoardingActivity"
-            android:exported="false" />
         <activity
             android:name=".view.MainActivity"
             android:exported="true"
