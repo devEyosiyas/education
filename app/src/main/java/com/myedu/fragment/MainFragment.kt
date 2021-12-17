@@ -1,13 +1,20 @@
 package com.myedu.fragment
 
+import android.Manifest.permission.CAMERA
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -15,6 +22,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import coil.load
 import com.google.android.material.chip.Chip
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.myedu.R
@@ -26,6 +34,8 @@ import com.myedu.model.Course
 import com.myedu.model.response.CourseResponse
 import com.myedu.room.viewmodel.CourseViewModel
 import com.myedu.utils.Client
+import com.myedu.utils.Constant.CAMERA_IMAGE_REQUEST_CODE
+import com.myedu.utils.Constant.CAMERA_PERMISSION_REQUEST_CODE
 import com.myedu.utils.Constant.IMAGE_PICKER_REQUEST_CODE
 import com.myedu.utils.Constant.PAGE
 import com.myedu.utils.Constant.PAGE_SIZE
@@ -85,11 +95,11 @@ class MainFragment : Fragment(), CourseListener {
         }
         getLatestCourses()
         getCourseByCategory(categories[0])
-            if (pref.profilePicture != "null" || pref.profilePicture != "")
-                binding.userPicture.load(Uri.parse(pref.profilePicture))
+        if (pref.profilePicture != "null" || pref.profilePicture != "")
+            binding.userPicture.load(Uri.parse(pref.profilePicture))
         Log.i(TAG, "onViewCreated: profile pic ${pref.profilePicture}")
         binding.userPicture.apply {
-            setOnClickListener { pickImage() }
+            setOnClickListener { showPictureDialog() }
         }
     }
 
@@ -120,9 +130,29 @@ class MainFragment : Fragment(), CourseListener {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == IMAGE_PICKER_REQUEST_CODE && resultCode == RESULT_OK && data != null && data.data != null) {
             imageUri = data.data
-            pref.profilePicture = imageUri.toString()
+//            pref.profilePicture = imageUri.toString()
             Log.i(TAG, "onActivityResult: $imageUri")
-//            binding.userPicture.load(imageUri)
+            binding.userPicture.load(imageUri)
+        }
+
+        if (requestCode == CAMERA_IMAGE_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            val imageBitmap = data.extras?.get("data") as Bitmap
+            binding.userPicture.load(imageBitmap)
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PERMISSION_GRANTED)
+                captureImage()
+            else
+                Toast.makeText(context, "Camera permission denied.", Toast.LENGTH_LONG)
+                    .show()
         }
     }
 
@@ -226,11 +256,39 @@ class MainFragment : Fragment(), CourseListener {
         intent.action = Intent.ACTION_GET_CONTENT
         startActivityForResult(
             Intent.createChooser(
-               intent,
+                intent,
                 getString(R.string.image_pick_title)
             ),
             IMAGE_PICKER_REQUEST_CODE
         )
     }
 
+    private fun captureImage() {
+        startActivityForResult(Intent(MediaStore.ACTION_IMAGE_CAPTURE), CAMERA_IMAGE_REQUEST_CODE)
+    }
+
+    private fun checkCameraPermission() {
+        activity?.let {
+            if (ContextCompat.checkSelfPermission(it, CAMERA) == PERMISSION_GRANTED
+            )
+                captureImage()
+            else
+                ActivityCompat.requestPermissions(
+                    it,
+                    arrayOf(CAMERA),
+                    CAMERA_PERMISSION_REQUEST_CODE
+                )
+        }
+    }
+
+    private fun showPictureDialog() {
+        context?.let {
+            MaterialAlertDialogBuilder(it)
+                .setTitle(getString(R.string.camera_title))
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.camera)) { _, _ -> checkCameraPermission() }
+                .setNegativeButton(getString(R.string.gallery)) { _, _ -> pickImage() }
+                .show()
+        }
+    }
 }

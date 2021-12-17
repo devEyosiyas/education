@@ -12,4 +12,6 @@ object Constant {
     const val PAGE_SIZE = 50
 
     const val IMAGE_PICKER_REQUEST_CODE = 1
+    const val CAMERA_PERMISSION_REQUEST_CODE = 2
+    const val CAMERA_IMAGE_REQUEST_CODE = 3
 }
