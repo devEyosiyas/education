@@ -133,7 +133,7 @@ class LoginFragment : Fragment() {
                 isHelperTextEnabled = false
             }
 
-        if (!validatePassword(binding.editPassword.text.toString()))
+        if (binding.editPassword.text.toString().isEmpty())
             with(binding.passwordInputLayout) {
                 requestFocus()
                 error = getString(R.string.helper_password)
