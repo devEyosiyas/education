@@ -26,6 +26,18 @@ interface ServerRequest {
         "Authorization: " + BuildConfig.Authorization,
         "Content-Type: application/json;charset=utf-8"
     )
+    @GET("api-2.0/courses/")
+    fun getCourses(
+        @Query(value = "page") page: Int,
+        @Query(value = "page_size") pageSize: Int,
+        @Query(value = "search") search: String
+    ): Call<CourseResponse?>
+
+    @Headers(
+        "Accept: application/json, text/plain, */*",
+        "Authorization: " + BuildConfig.Authorization,
+        "Content-Type: application/json;charset=utf-8"
+    )
     @GET("api-2.0/courses/{id}")
     fun getCourseDetail(@Path(value = "id") id: Int): Call<CourseDetailResponse?>
 

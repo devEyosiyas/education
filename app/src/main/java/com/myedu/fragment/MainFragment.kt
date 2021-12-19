@@ -15,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -97,7 +98,7 @@ class MainFragment : Fragment(), CourseListener {
                 setOnClickListener { getCourseByCategory(text.toString()) }
             }
         }
-        getLatestCourses()
+        getLatestCourses("")
         getCourseByCategory(categories[0])
         Log.i(TAG, "onViewCreated: profile pic ${Uri.decode(pref.profilePicture)}")
         binding.userPicture.apply {
@@ -107,24 +108,42 @@ class MainFragment : Fragment(), CourseListener {
                 error(R.drawable.ic_person)
             }
         }
-    }
-
-    private fun getLatestCourses() {
-        request.getCourses(PAGE, PAGE_SIZE).enqueue(object : Callback<CourseResponse?> {
-            override fun onResponse(
-                call: Call<CourseResponse?>,
-                response: Response<CourseResponse?>
-            ) {
-                val courseResponse = response.body()
-                if (response.isSuccessful && courseResponse != null && courseResponse.courses.isNotEmpty()) {
-                    viewModel.insert(courseResponse.courses)
-                }
+        binding.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                getLatestCourses(query)
+                return true
             }
 
-            override fun onFailure(call: Call<CourseResponse?>, t: Throwable) {
-                Log.e(TAG, "onFailure: ", t)
+            override fun onQueryTextChange(newText: String?): Boolean {
+                getLatestCourses(newText)
+                return true
             }
         })
+    }
+
+    private fun getLatestCourses(search: String?) {
+        binding.progress.visibility = View.VISIBLE
+        if (search.isNullOrEmpty())
+            request.getCourses(PAGE, PAGE_SIZE)
+        else
+            request.getCourses(PAGE, PAGE_SIZE, search)
+                .enqueue(object : Callback<CourseResponse?> {
+                    override fun onResponse(
+                        call: Call<CourseResponse?>,
+                        response: Response<CourseResponse?>
+                    ) {
+                        val courseResponse = response.body()
+                        if (response.isSuccessful && courseResponse != null && courseResponse.courses.isNotEmpty()) {
+                            viewModel.insert(courseResponse.courses)
+                        }
+                        binding.progress.visibility = View.GONE
+                    }
+
+                    override fun onFailure(call: Call<CourseResponse?>, t: Throwable) {
+                        Log.e(TAG, "onFailure: ", t)
+                        binding.progress.visibility = View.GONE
+                    }
+                })
     }
 
     override fun onDestroyView() {
