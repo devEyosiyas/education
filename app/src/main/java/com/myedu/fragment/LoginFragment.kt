@@ -15,7 +15,6 @@ import com.myedu.R
 import com.myedu.databinding.FragmentLoginBinding
 import com.myedu.utils.PrefManager
 import com.myedu.utils.Validator.validateEmail
-import com.myedu.utils.Validator.validatePassword
 
 
 class LoginFragment : Fragment() {
@@ -49,20 +48,21 @@ class LoginFragment : Fragment() {
         }
 
         binding.editPassword.doOnTextChanged { text, _, _, _ ->
-            if (validatePassword(text.toString()))
+            if (text.toString().isNotEmpty())
                 with(binding.passwordInputLayout) {
                     error = null
                     isHelperTextEnabled = false
                 }
             else
-                binding.passwordInputLayout.error = getString(R.string.error_password)
+                binding.passwordInputLayout.error = getString(R.string.invalid_password)
         }
 
         binding.btnLogIn.setOnClickListener {
             validateFields()
             when {
                 !validateEmail(binding.editEmail.text.toString()) -> binding.editEmail.requestFocus()
-                !validatePassword(binding.editPassword.text.toString()) -> binding.editPassword.requestFocus()
+                binding.editPassword.text.toString()
+                    .isEmpty() -> binding.editPassword.requestFocus()
                 else -> login()
             }
         }
