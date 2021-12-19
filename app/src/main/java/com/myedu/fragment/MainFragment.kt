@@ -115,7 +115,10 @@ class MainFragment : Fragment(), CourseListener {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                getLatestCourses(newText)
+                if (newText.toString().isEmpty())
+                    adapter.data = viewModel.courses.value
+                else
+                    getLatestCourses(newText)
                 return true
             }
         })
@@ -123,27 +126,31 @@ class MainFragment : Fragment(), CourseListener {
 
     private fun getLatestCourses(search: String?) {
         binding.progress.visibility = View.VISIBLE
-        if (search.isNullOrEmpty())
+        val call: Call<CourseResponse?> = if (search.isNullOrEmpty())
             request.getCourses(PAGE, PAGE_SIZE)
         else
             request.getCourses(PAGE, PAGE_SIZE, search)
-                .enqueue(object : Callback<CourseResponse?> {
-                    override fun onResponse(
-                        call: Call<CourseResponse?>,
-                        response: Response<CourseResponse?>
-                    ) {
-                        val courseResponse = response.body()
-                        if (response.isSuccessful && courseResponse != null && courseResponse.courses.isNotEmpty()) {
-                            viewModel.insert(courseResponse.courses)
-                        }
-                        binding.progress.visibility = View.GONE
-                    }
 
-                    override fun onFailure(call: Call<CourseResponse?>, t: Throwable) {
-                        Log.e(TAG, "onFailure: ", t)
-                        binding.progress.visibility = View.GONE
-                    }
-                })
+        call.enqueue(object : Callback<CourseResponse?> {
+            override fun onResponse(
+                call: Call<CourseResponse?>,
+                response: Response<CourseResponse?>
+            ) {
+                val courseResponse = response.body()
+                if (response.isSuccessful && courseResponse != null && courseResponse.courses.isNotEmpty()) {
+                    if (search.isNullOrEmpty())
+                        viewModel.insert(courseResponse.courses)
+                    else
+                        adapter.data = courseResponse.courses
+                }
+                binding.progress.visibility = View.GONE
+            }
+
+            override fun onFailure(call: Call<CourseResponse?>, t: Throwable) {
+                Log.e(TAG, "onFailure: ", t)
+                binding.progress.visibility = View.GONE
+            }
+        })
     }
 
     override fun onDestroyView() {
