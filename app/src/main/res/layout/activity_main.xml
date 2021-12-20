@@ -37,5 +37,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         app:labelVisibilityMode="labeled"
+        app:itemTextColor="@drawable/bottom_bar_item_colors"
+        app:itemIconTint="@drawable/bottom_bar_item_colors"
+        android:background="@color/lightGray"
         app:menu="@menu/bottom_nav_menu" />
 </RelativeLayout>

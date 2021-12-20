@@ -11,4 +11,9 @@
     <color name="brand_dark">#3d166b</color>
     <color name="brand_light">#9d6ecb</color>
     <color name="brand_gray">#999999</color>
+
+    <color name="darkGray">#202122</color>
+    <color name="lightGray">#989CA0</color>
+    <color name="green">#77D353</color>
+    <color name="darkGreen">#5C9447</color>
 </resources>
