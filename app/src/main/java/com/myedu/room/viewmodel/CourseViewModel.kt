@@ -11,6 +11,7 @@ class CourseViewModel(application: Application) : AndroidViewModel(application) 
     private val courseRepository: CourseRepository = CourseRepository(application)
     val courses: LiveData<List<Course>?> = courseRepository.courses
     val favouriteCourses: LiveData<List<Course>?> = courseRepository.favouriteCourses
+    val myCourses: LiveData<List<Course>?> = courseRepository.myCourses
     var coursesList = MediatorLiveData<List<Course>>()
 
     fun insert(course: Course) {

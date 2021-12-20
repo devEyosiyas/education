@@ -1,11 +1,13 @@
 package com.myedu.fragment
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -20,6 +22,7 @@ import com.myedu.model.response.CourseDetailResponse
 import com.myedu.room.viewmodel.CourseViewModel
 import com.myedu.utils.Client
 import com.myedu.utils.Constant.UDEMY_BASE_URL
+import com.myedu.view.MainActivity
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -57,14 +60,9 @@ class CourseDetailFragment : Fragment() {
                 binding.favorite.isChecked = selectedCourse!!.favourite
                 binding.courseHeadline.text = selectedCourse!!.headline
                 binding.txtAboutTheCourse.visibility = View.VISIBLE
+                if (selectedCourse!!.myCourse)
+                    binding.btnStart.text = getString(R.string.resume_course)
             }
-
-        }
-
-        binding.imgBack.setOnClickListener {
-            Navigation
-                .createNavigateOnClickListener(if (args.source == "favourite") R.id.action_courseDetailFragment_to_favouriteFragment else R.id.action_courseDetailFragment_to_mainFragment)
-                .onClick(it)
         }
 
         binding.btnShare.setOnClickListener { shareCourse() }
@@ -73,6 +71,43 @@ class CourseDetailFragment : Fragment() {
             selectedCourse?.let {
                 it.favourite = b
                 viewModel.update(it)
+            }
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            Navigation
+                .createNavigateOnClickListener(
+                    when (args.source) {
+                        "favourite" -> R.id.action_courseDetailFragment_to_favouriteFragment
+                        "course" -> R.id.action_courseDetailFragment_to_myCourseFragment
+                        else -> R.id.action_courseDetailFragment_to_mainFragment
+                    }
+                )
+                .onClick(view)
+        }
+
+        with(binding.btnStart) {
+            setOnClickListener {
+                if (text == getString(R.string.start_course))
+                    selectedCourse?.let {
+                        it.myCourse = true
+                        viewModel.update(it)
+                    }
+//                if (text == getString(R.string.resume_course))
+                startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(
+                            UDEMY_BASE_URL.removeSuffix("/") + (selectedCourse?.url
+                                ?: "www.google.com")
+                        )
+                    )
+                )
+//                else
+//                    selectedCourse?.let {
+//                        it.myCourse = true
+//                        viewModel.update(it)
+//                    }
             }
         }
     }
@@ -105,6 +140,8 @@ class CourseDetailFragment : Fragment() {
                     with(binding) {
                         courseBanner.load(courseDetailResponse.image480x270)
                         courseTitle.text = courseDetailResponse.title
+                        (activity as MainActivity).binding.toolbar.title =
+                            courseDetailResponse.title
                         instructorName.text = courseDetailResponse.instructors[0].displayName
                     }
                 }

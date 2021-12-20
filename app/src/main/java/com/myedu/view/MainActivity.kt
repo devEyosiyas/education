@@ -15,7 +15,7 @@ import com.myedu.utils.PrefManager
 
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+    lateinit var binding: ActivityMainBinding
     private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         setTheme(R.style.Theme_MyEdu);
         binding = ActivityMainBinding.inflate(layoutInflater)
+        setSupportActionBar(binding.toolbar)
         setContentView(binding.root)
         auth = Firebase.auth
         val currentUser = auth.currentUser
@@ -40,12 +41,18 @@ class MainActivity : AppCompatActivity() {
         }.also { navGraph.startDestination = it }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.onBoardingFragment || destination.id == R.id.loginFragment || destination.id == R.id.signUpFragment)
+            if (destination.id == R.id.onBoardingFragment || destination.id == R.id.loginFragment || destination.id == R.id.signUpFragment) {
+                binding.appBar.visibility = View.GONE
                 binding.bottomNavView.visibility = View.GONE
-            else
+            } else {
+                binding.appBar.visibility = View.VISIBLE
                 binding.bottomNavView.visibility = View.VISIBLE
+            }
+            if (destination.id == R.id.mainFragment)
+                binding.appBar.visibility = View.GONE
         }
         navController.graph = navGraph
         binding.bottomNavView.setupWithNavController(navController)
+        binding.toolbar.setupWithNavController(navController)
     }
 }

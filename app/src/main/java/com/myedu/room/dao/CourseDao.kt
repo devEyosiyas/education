@@ -25,6 +25,9 @@ interface CourseDao {
     @get:Query("SELECT * FROM Course WHERE favourite = 1 ORDER BY id DESC LIMIT 100")
     val favouriteCourses: LiveData<List<Course>?>
 
+    @get:Query("SELECT * FROM Course WHERE myCourse = 1 ORDER BY id DESC LIMIT 100")
+    val myCourses: LiveData<List<Course>?>
+
     @Query("SELECT * FROM Course WHERE id = :id")
     fun course(id: Int): Course
 }

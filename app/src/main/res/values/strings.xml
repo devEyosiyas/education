@@ -36,4 +36,9 @@
     <string name="update">Update</string>
     <string name="profile_updated">Profile updated</string>
     <string name="profile_update_failed">Profile update failed</string>
+    <string name="favourite_course">Favourite Course</string>
+    <string name="course_detail">Course Detail</string>
+    <string name="start_course">Start Course</string>
+    <string name="resume_course">Resume Course</string>
+    <string name="my_course">My Course</string>
 </resources>

@@ -13,6 +13,7 @@ class CourseRepository(application: Application) {
     private val courseDao: CourseDao
     val courses: LiveData<List<Course>?>
     val favouriteCourses: LiveData<List<Course>?>
+    val myCourses: LiveData<List<Course>?>
 
     fun insert(course: Course) {
         RoomDb.databaseWriteExecutor.execute { courseDao.insert(course) }
@@ -43,5 +44,6 @@ class CourseRepository(application: Application) {
         courseDao = db.courseDao()
         courses = courseDao.courses
         favouriteCourses = courseDao.favouriteCourses
+        myCourses = courseDao.myCourses
     }
 }

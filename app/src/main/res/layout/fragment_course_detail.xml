@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/viewPager"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -17,18 +16,6 @@
         android:layout_width="match_parent"
         android:layout_height="270dp"
         android:scaleType="centerCrop" />
-
-    <ImageButton
-        android:id="@+id/imgBack"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/curved_background"
-        android:clickable="true"
-        android:focusable="true"
-        android:src="@drawable/ic_arrow_back"
-        app:tint="@color/brand_dark" />
 
     <TextView
         android:id="@+id/courseTitle"
@@ -63,6 +50,20 @@
         android:textAllCaps="false"
         app:icon="@drawable/ic_share" />
 
+    <Button
+        android:id="@+id/btnStart"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/instructorName"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/start_course"
+        android:textAllCaps="false" />
+
     <TextView
         android:id="@+id/txtAboutTheCourse"
         android:layout_width="wrap_content"
@@ -87,7 +88,7 @@
         android:id="@+id/favorite"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:layout_below="@id/instructorName"
+        android:layout_below="@id/btnStart"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"

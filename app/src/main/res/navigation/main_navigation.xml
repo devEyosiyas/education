@@ -60,11 +60,17 @@
         <action
             android:id="@+id/action_mainFragment_to_favouriteFragment"
             app:destination="@id/favouriteFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_myCourseFragment"
+            app:destination="@id/myCourseFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_myCourseFragment2"
+            app:destination="@id/myCourseFragment" />
     </fragment>
     <fragment
         android:id="@+id/courseDetailFragment"
         android:name="com.myedu.fragment.CourseDetailFragment"
-        android:label="CourseDetailFragment">
+        android:label="@string/course_detail">
         <action
             android:id="@+id/action_courseDetailFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
@@ -80,12 +86,15 @@
         <action
             android:id="@+id/action_courseDetailFragment_to_favouriteFragment"
             app:destination="@id/favouriteFragment" />
+        <action
+            android:id="@+id/action_courseDetailFragment_to_myCourseFragment"
+            app:destination="@id/myCourseFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment2"
         android:name="com.myedu.fragment.ProfileFragment"
-        android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" >
+        android:label="@string/profile"
+        tools:layout="@layout/fragment_profile">
         <action
             android:id="@+id/action_profileFragment2_to_mainFragment"
             app:destination="@id/mainFragment" />
@@ -93,12 +102,32 @@
     <fragment
         android:id="@+id/favouriteFragment"
         android:name="com.myedu.fragment.FavouriteFragment"
-        android:label="FavouriteFragment" >
+        android:label="@string/favourite_course">
         <action
             android:id="@+id/action_favouriteFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
         <action
             android:id="@+id/action_favouriteFragment_to_courseDetailFragment"
             app:destination="@id/courseDetailFragment" />
+        <argument
+            android:name="source"
+            android:defaultValue="main"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/myCourseFragment"
+        android:name="com.myedu.fragment.MyCourseFragment"
+        android:label="@string/my_course"
+        tools:layout="@layout/fragment_my_course">
+        <action
+            android:id="@+id/action_myCourseFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_myCourseFragment_to_courseDetailFragment"
+            app:destination="@id/courseDetailFragment" />
+        <argument
+            android:name="source"
+            android:defaultValue="main"
+            app:argType="string" />
     </fragment>
 </navigation>
