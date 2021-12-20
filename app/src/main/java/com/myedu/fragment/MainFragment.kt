@@ -33,8 +33,7 @@ import java.util.*
 
 
 class MainFragment : Fragment(), CourseListener {
-    private var _binding: FragmentMainBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentMainBinding
     private lateinit var pref: PrefManager
     private lateinit var adapter: CourseAdapter
     private lateinit var categoryAdapter: CourseAdapter
@@ -46,7 +45,7 @@ class MainFragment : Fragment(), CourseListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
+        binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -134,11 +133,6 @@ class MainFragment : Fragment(), CourseListener {
         })
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     companion object {
         private const val TAG = "MainFragment"
     }
@@ -171,6 +165,4 @@ class MainFragment : Fragment(), CourseListener {
             )
             .onClick(view)
     }
-
-
 }

@@ -34,7 +34,7 @@
     <string name="camera_permission_denied">Camera permission denied.</string>
     <string name="invalid_password">Password required</string>
     <string name="update">Update</string>
-    <string name="profile_updated">Profile updated</string>
+    <string name="profile_updated">Profile submit</string>
     <string name="profile_update_failed">Profile update failed</string>
     <string name="favourite_course">Favourite Course</string>
     <string name="course_detail">Course Detail</string>
