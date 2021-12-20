@@ -54,6 +54,7 @@ class CourseDetailFragment : Fragment() {
             }
 
             if (selectedCourse != null) {
+                binding.favorite.isChecked = selectedCourse!!.favourite
                 binding.courseHeadline.text = selectedCourse!!.headline
                 binding.txtAboutTheCourse.visibility = View.VISIBLE
             }
@@ -62,11 +63,18 @@ class CourseDetailFragment : Fragment() {
 
         binding.imgBack.setOnClickListener {
             Navigation
-                .createNavigateOnClickListener(R.id.action_courseDetailFragment_to_mainFragment)
+                .createNavigateOnClickListener(if (args.source == "favourite") R.id.action_courseDetailFragment_to_favouriteFragment else R.id.action_courseDetailFragment_to_mainFragment)
                 .onClick(it)
         }
 
         binding.btnShare.setOnClickListener { shareCourse() }
+
+        binding.favorite.setOnCheckedChangeListener { _, b ->
+            selectedCourse?.let {
+                it.favourite = b
+                viewModel.update(it)
+            }
+        }
     }
 
     private fun shareCourse() {

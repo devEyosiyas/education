@@ -37,8 +37,8 @@ data class Course(
     val trackingId: String,
     @SerializedName("url")
     val url: String,
-
-    ) {
+    var favourite: Boolean
+) {
     @Ignore
     @SerializedName("curriculum_items")
     val curriculumItems: List<Any>? = null

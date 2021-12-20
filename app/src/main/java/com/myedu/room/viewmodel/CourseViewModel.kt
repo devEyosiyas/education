@@ -10,10 +10,15 @@ import com.myedu.room.repository.CourseRepository
 class CourseViewModel(application: Application) : AndroidViewModel(application) {
     private val courseRepository: CourseRepository = CourseRepository(application)
     val courses: LiveData<List<Course>?> = courseRepository.courses
+    val favouriteCourses: LiveData<List<Course>?> = courseRepository.favouriteCourses
     var coursesList = MediatorLiveData<List<Course>>()
 
     fun insert(course: Course) {
         courseRepository.insert(course)
+    }
+
+    fun update(course: Course) {
+        courseRepository.update(course)
     }
 
     fun insert(courses: List<Course>) {

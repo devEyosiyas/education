@@ -57,6 +57,9 @@
         <action
             android:id="@+id/action_mainFragment_to_profileFragment2"
             app:destination="@id/profileFragment2" />
+        <action
+            android:id="@+id/action_mainFragment_to_favouriteFragment"
+            app:destination="@id/favouriteFragment" />
     </fragment>
     <fragment
         android:id="@+id/courseDetailFragment"
@@ -69,6 +72,14 @@
             android:name="courseId"
             android:defaultValue="0"
             app:argType="integer" />
+
+        <argument
+            android:name="source"
+            android:defaultValue="main"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_courseDetailFragment_to_favouriteFragment"
+            app:destination="@id/favouriteFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment2"
@@ -78,5 +89,16 @@
         <action
             android:id="@+id/action_profileFragment2_to_mainFragment"
             app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/favouriteFragment"
+        android:name="com.myedu.fragment.FavouriteFragment"
+        android:label="FavouriteFragment" >
+        <action
+            android:id="@+id/action_favouriteFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+        <action
+            android:id="@+id/action_favouriteFragment_to_courseDetailFragment"
+            app:destination="@id/courseDetailFragment" />
     </fragment>
 </navigation>

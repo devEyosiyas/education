@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/viewPagerFragment"
+        android:id="@+id/mainFragment"
         android:icon="@drawable/ic_home"
         android:title="@string/home" />
     <item
@@ -9,11 +9,11 @@
         android:icon="@drawable/ic_book"
         android:title="@string/my_courses" />
     <item
-        android:id="@+id/navMenuBlockedMessages"
+        android:id="@+id/favouriteFragment"
         android:icon="@drawable/ic_favorite"
         android:title="@string/favourite" />
     <item
-        android:id="@+id/navMenuWhitelist"
+        android:id="@+id/profileFragment2"
         android:icon="@drawable/ic_person"
         android:title="@string/profile" />
 </menu>

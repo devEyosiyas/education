@@ -167,7 +167,7 @@ class MainFragment : Fragment(), CourseListener {
         Navigation
             .createNavigateOnClickListener(
                 R.id.action_mainFragment_to_courseDetailFragment,
-                bundleOf("courseId" to course.id)
+                bundleOf("courseId" to course.id, "source" to "main")
             )
             .onClick(view)
     }

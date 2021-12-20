@@ -12,9 +12,14 @@ import kotlin.coroutines.coroutineContext
 class CourseRepository(application: Application) {
     private val courseDao: CourseDao
     val courses: LiveData<List<Course>?>
+    val favouriteCourses: LiveData<List<Course>?>
 
     fun insert(course: Course) {
         RoomDb.databaseWriteExecutor.execute { courseDao.insert(course) }
+    }
+
+    fun update(course: Course) {
+        RoomDb.databaseWriteExecutor.execute { courseDao.update(course) }
     }
 
     fun delete(course: Course) {
@@ -37,5 +42,6 @@ class CourseRepository(application: Application) {
         val db: RoomDb = RoomDb.getDatabase(application)!!
         courseDao = db.courseDao()
         courses = courseDao.courses
+        favouriteCourses = courseDao.favouriteCourses
     }
 }

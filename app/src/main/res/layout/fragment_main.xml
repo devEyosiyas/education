@@ -68,9 +68,7 @@
             android:layout_below="@id/txtPopularCourses"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_course" >
-
-        </androidx.recyclerview.widget.RecyclerView>
+            tools:listitem="@layout/item_course"/>
 
         <ProgressBar
             android:id="@+id/progress"

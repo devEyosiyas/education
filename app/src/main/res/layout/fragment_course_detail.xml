@@ -69,11 +69,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/instructorName"
         android:padding="16dp"
-        android:visibility="gone"
         android:text="@string/about_the_course"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
         android:textColor="@color/black"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/courseHeadline"
@@ -82,5 +82,18 @@
         android:layout_below="@id/txtAboutTheCourse"
         android:padding="16dp"
         android:textColor="@color/black" />
+
+    <CheckBox
+        android:id="@+id/favorite"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_below="@id/instructorName"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:button="@drawable/favourite"
+        android:buttonTint="@color/brand_dark"
+        android:checked="false"
+        android:padding="8dp" />
 
 </RelativeLayout>
