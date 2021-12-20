@@ -27,7 +27,7 @@ class MyCourseFragment : Fragment(), CourseListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentMyCourseBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -54,9 +54,5 @@ class MyCourseFragment : Fragment(), CourseListener {
                 bundleOf("courseId" to course.id, "source" to "course")
             )
             .onClick(view)
-    }
-
-    companion object {
-        private const val TAG = "MyCourseFragment"
     }
 }

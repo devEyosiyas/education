@@ -30,7 +30,7 @@ class SignUpFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentSignUpBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -159,7 +159,4 @@ class SignUpFragment : Fragment() {
         _binding = null
     }
 
-    companion object {
-        private const val TAG = "SignUpFragment"
-    }
 }

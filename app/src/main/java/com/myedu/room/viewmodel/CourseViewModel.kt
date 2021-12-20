@@ -44,7 +44,7 @@ class CourseViewModel(application: Application) : AndroidViewModel(application) 
     val isEmpty: Boolean
         get() = if (courseRepository.courses.value != null) courseRepository.courses.value!!.isNotEmpty() else true
 
-    fun exists(id: Int): Boolean {
+    private fun exists(id: Int): Boolean {
         var exist = false
         if (courses.value != null)
             for (course in courses.value!!) {
