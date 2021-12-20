@@ -37,7 +37,7 @@ class SignUpFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        pref = context?.let { PrefManager(it) }!!
+        pref = PrefManager(requireContext())
         auth = Firebase.auth
 
         binding.editName.doOnTextChanged { text, _, _, _ ->

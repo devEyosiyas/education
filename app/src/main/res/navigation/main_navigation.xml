@@ -54,6 +54,9 @@
         <action
             android:id="@+id/action_mainFragment_to_courseDetailFragment"
             app:destination="@id/courseDetailFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_profileFragment2"
+            app:destination="@id/profileFragment2" />
     </fragment>
     <fragment
         android:id="@+id/courseDetailFragment"
@@ -66,5 +69,14 @@
             android:name="courseId"
             android:defaultValue="0"
             app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment2"
+        android:name="com.myedu.fragment.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment2_to_mainFragment"
+            app:destination="@id/mainFragment" />
     </fragment>
 </navigation>

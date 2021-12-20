@@ -5,7 +5,7 @@ object Constant {
     const val FIRST_TIMER = "firstTimer"
     const val PREF_NAME = "name"
     const val PREF_EMAIL = "email"
-    const val PREF_PROFILE_PICTURE = "profilePicture"
+    const val IMAGE_NAME = "profile.jpg"
 
     const val UDEMY_BASE_URL = "https://www.udemy.com/"
     const val STORAGE_PATH = "profile_picture/"
