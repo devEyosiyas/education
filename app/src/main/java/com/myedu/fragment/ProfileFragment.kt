@@ -20,6 +20,10 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import coil.load
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.myedu.R
@@ -27,6 +31,7 @@ import com.myedu.databinding.FragmentProfileBinding
 import com.myedu.utils.Constant
 import com.myedu.utils.Constant.IMAGE_NAME
 import com.myedu.utils.PrefManager
+import com.myedu.utils.Validator
 import java.io.ByteArrayOutputStream
 import java.io.FileNotFoundException
 
@@ -36,7 +41,7 @@ class ProfileFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var pref: PrefManager
     private lateinit var storageReference: StorageReference
-
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,12 +56,60 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         storageReference = FirebaseStorage.getInstance().reference
         pref = PrefManager(requireContext())
+        auth = Firebase.auth
         binding.userPicture.apply {
             setOnClickListener { showPictureDialog() }
             load(requireContext().getFileStreamPath(IMAGE_NAME)) {
                 placeholder(R.drawable.ic_person)
                 error(R.drawable.ic_person)
             }
+        }
+        binding.btnUpdate.setOnClickListener {
+            validateFields()
+            if (!Validator.validateName(binding.editName.text.toString()) && binding.editName.text.toString() == pref.name)
+                binding.editName.requestFocus()
+            else
+                updateProfile()
+        }
+    }
+
+    private fun validateFields() {
+        if (!Validator.validateName(binding.editName.text.toString()))
+            with(binding.nameInputLayout) {
+                requestFocus()
+                error = getString(R.string.helper_name)
+            }
+        else
+            with(binding.nameInputLayout) {
+                error = null
+                isHelperTextEnabled = false
+            }
+    }
+
+    private fun updateProfile() {
+        binding.progress.visibility = View.VISIBLE
+        activity?.let {
+            val user = auth.currentUser
+            user?.updateProfile(
+                UserProfileChangeRequest.Builder()
+                    .setDisplayName(binding.editName.text.toString())
+                    .build()
+            )
+            if (user != null) {
+                pref.name = binding.editName.text.toString()
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.profile_updated),
+                    Toast.LENGTH_SHORT
+                ).show()
+                binding.editName.text?.clear()
+            } else
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.profile_update_failed),
+                    Toast.LENGTH_SHORT
+                ).show()
+            binding.progress.visibility = View.GONE
         }
     }
 
@@ -66,14 +119,17 @@ class ProfileFragment : Fragment() {
     }
 
     private fun uploadImage(imageUri: Uri) {
+        binding.progress.visibility = View.VISIBLE
         storageReference
             .child(Constant.STORAGE_PATH + System.currentTimeMillis())
             .putFile(imageUri)
             .addOnSuccessListener {
                 Toast.makeText(context, "Image Uploaded!!", Toast.LENGTH_SHORT).show()
+                binding.progress.visibility = View.GONE
             }
             .addOnFailureListener { e ->
                 Toast.makeText(context, "Failed " + e.message, Toast.LENGTH_SHORT).show()
+                binding.progress.visibility = View.GONE
             }
     }
 

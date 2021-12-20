@@ -7,6 +7,13 @@
     android:layout_height="match_parent"
     tools:context=".fragment.ProfileFragment">
 
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/userPicture"
         android:layout_width="64dp"
