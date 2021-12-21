@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/mreyo/OneDrive/Documents/GitHub/education/app/src/main/res/drawable/curved_background.xml" value="0.3611111111111111" />
+        <entry key="..\:/Users/mreyo/OneDrive/Documents/GitHub/education/app/src/main/res/drawable/favourite.xml" value="0.37864583333333335" />
         <entry key="..\:/Users/mreyo/OneDrive/Documents/GitHub/education/app/src/main/res/drawable/ic_splash.xml" value="0.21875" />
         <entry key="..\:/Users/mreyo/OneDrive/Documents/GitHub/education/app/src/main/res/drawable/slide_indicator_selected.xml" value="0.3728205128205128" />
         <entry key="..\:/Users/mreyo/OneDrive/Documents/GitHub/education/app/src/main/res/drawable/slide_indicator_unselected.xml" value="0.3728205128205128" />
@@ -15,9 +16,12 @@
         <entry key="..\:/Users/mreyo/OneDrive/Documents/GitHub/education/app/src/main/res/layout/activity_on_boarding.xml" value="0.19895833333333332" />
         <entry key="..\:/Users/mreyo/OneDrive/Documents/GitHub/education/app/src/main/res/layout/content_on_boarding.xml" value="0.19895833333333332" />
         <entry key="..\:/Users/mreyo/OneDrive/Documents/GitHub/education/app/src/main/res/layout/fragment_course_detail.xml" value="0.31851851851851853" />
+        <entry key="..\:/Users/mreyo/OneDrive/Documents/GitHub/education/app/src/main/res/layout/fragment_favourite.xml" value="0.3290229885057471" />
         <entry key="..\:/Users/mreyo/OneDrive/Documents/GitHub/education/app/src/main/res/layout/fragment_login.xml" value="0.3484375" />
         <entry key="..\:/Users/mreyo/OneDrive/Documents/GitHub/education/app/src/main/res/layout/fragment_main.xml" value="0.33" />
+        <entry key="..\:/Users/mreyo/OneDrive/Documents/GitHub/education/app/src/main/res/layout/fragment_my_course.xml" value="0.20260416666666667" />
         <entry key="..\:/Users/mreyo/OneDrive/Documents/GitHub/education/app/src/main/res/layout/fragment_on_boarding.xml" value="0.3625" />
+        <entry key="..\:/Users/mreyo/OneDrive/Documents/GitHub/education/app/src/main/res/layout/fragment_profile.xml" value="0.3625" />
         <entry key="..\:/Users/mreyo/OneDrive/Documents/GitHub/education/app/src/main/res/layout/fragment_sign_up.xml" value="0.33" />
         <entry key="..\:/Users/mreyo/OneDrive/Documents/GitHub/education/app/src/main/res/layout/item_course.xml" value="0.3625" />
         <entry key="..\:/Users/mreyo/OneDrive/Documents/GitHub/education/app/src/main/res/layout/item_on_boarding.xml" value="0.40520833333333334" />
